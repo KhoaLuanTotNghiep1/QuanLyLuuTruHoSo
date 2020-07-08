@@ -1,0 +1,99 @@
+﻿@using S3Train.Model.User
+@model UserViewModel
+@{
+    ViewBag.Title = "CreateOrUpdate";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+
+    string title = string.IsNullOrEmpty(Model.Id) ? "Tạo Mới" : "Cập Nhật";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@title Tài Khoản</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("IndexAsync","User")">User</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tao-Moi-Hoac-Cap-Nhat</li>
+    </ol>
+</div>
+
+<div class="card">
+    <div class="card-body" id="myForm">
+        @using (Html.BeginForm("CreateOrUpdate", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.FullName)</label>
+                    @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Họ và tên" } })
+                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.PhoneNumber)</label>
+                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Số điện thoại" } })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label>@Html.DisplayNameFor(item => Model.Address)</label>
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @placeholder = "Địa chỉ" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.Email)</label>
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Địa chỉ email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.UserName)</label>
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tên tài khoản" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.Password)</label>
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Mật khẩu" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.ConfirmPassword)</label>
+                    @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "Xác nhận mật khẩu" } })
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.Role)</label>
+                    @Html.DropDownListFor(m => m.Role, new SelectList(ViewBag.Roles, "Value", "Text"), new { @class = "form-control" })
+                </div>
+                <div class="col-md-6">
+                    <ul>
+                        <li>Có ít nhất 10 ký tự</li>
+                        <li>Có ký tự in hoa</li>
+                        <li>Có ký tự thường</li>
+                        <li>Có Số</li>
+                        <li>Có một ký tự đặc biệt (!, #, $, &,...)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            var successMessage = '@TempData["AlertMessage"]'
+            if (successMessage != '')
+                alertify.success(successMessage);
+        });
+    </script>
+}

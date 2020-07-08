@@ -1,0 +1,218 @@
+﻿@using S3Train.WebHeThong.Models
+@model TaiLieu_VanBanViewModel
+
+@{
+    ViewBag.Title = "CreateOrUpdate";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+
+    string title = string.IsNullOrEmpty(Model.Id) ? "Tạo Mới" : "Cập Nhật";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@title Tài Liệu/Văn Bản</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index","TaiLieuVanBan")">Tai-Lieu-Van-Ban</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tao-Moi-Hoac-Cap-Nhat</li>
+    </ol>
+</div>
+
+<div class="card">
+    <div class="card-body" id="myForm">
+        @using (Html.BeginForm("CreateOrUpdate", "TaiLieuVanBan", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group row">
+                <div class="col-md">
+                    <label>@Html.DisplayNameFor(item => Model.Ten)</label>
+                    @Html.EditorFor(model => model.Ten, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tên văn bản" } })
+                    @Html.ValidationMessageFor(model => model.Ten, "", new { @class = "text-danger" })
+                    <input type="hidden" id="Ten">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.NoiBanHanhId)</label>
+                    @Html.DropDownListFor(m => m.NoiBanHanhId, new SelectList(ViewBag.NoiBanHanhs, "value", "Text"), new { @class = "form-control" })
+                </div>
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.Loai)</label>
+                    @Html.DropDownListFor(m => m.Loai, new SelectList(ViewBag.LoaiHoSos, "Text", "Text"), new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <label>@Html.DisplayNameFor(item => Model.NgayBanHanh)</label>
+                    @Html.EditorFor(model => model.NgayBanHanh, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NgayBanHanh, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-3">
+                    <label>@Html.DisplayNameFor(item => Model.SoKyHieu)</label>
+                    @Html.EditorFor(model => model.SoKyHieu, new { htmlAttributes = new { @class = "form-control", @placeholder = "Số ký hiệu của văn bản" } })
+                    @Html.ValidationMessageFor(model => model.SoKyHieu, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-3">
+                    <label>@Html.DisplayNameFor(item => Model.Dang)</label>
+                    @Html.DropDownListFor(m => m.Dang, new SelectList(ViewBag.Dangs, "Text", "Text"), new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    <label>@Html.DisplayNameFor(item => Model.SoTo)</label>
+                    @Html.EditorFor(model => model.SoTo, new { htmlAttributes = new { @class = "form-control", @min = "1" } })
+                    @Html.ValidationMessageFor(model => model.SoTo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.NguoiKy)</label>
+                    @Html.EditorFor(model => model.NguoiKy, new { htmlAttributes = new { @class = "form-control", @placeholder = "Họ và tên người ký nhận văn bản" } })
+                    @Html.ValidationMessageFor(model => model.NguoiKy, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.NguoiDuyet)</label>
+                    @Html.EditorFor(model => model.NguoiDuyet, new { htmlAttributes = new { @class = "form-control", @placeholder = "Họ và tên người duyệt văn bản" } })
+                    @Html.ValidationMessageFor(model => model.NguoiDuyet, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label>Người Nhận</label>
+                    @Html.EditorFor(model => model.NguoiGuiHoacNhan, new { htmlAttributes = new { @class = "form-control", @placeholder = "Họ và tên người nhận văn bản" } })
+                    @Html.ValidationMessageFor(model => model.NguoiGuiHoacNhan, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    <label>File Đính Kèm</label>
+                    <input type="file" class="form-control" name="file" />
+                    <span class="small">Có thể có hoặc không</span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label>Hình Ảnh</label>
+                    <input type="file" class="form-control" name="file" id="imageFile" />
+                    <span class="small">Có thể có hoặc không</span>
+                </div>
+                <div class="col-md-6" style="width:250px; height:300px" id="containerImage">
+                    <img src="~/Content/HinhAnhTLVB/@Model.HinhAnh" class="img-fluid rounded"
+                         alt="Hình Ảnh Tài Liệu/Văn Bản" id="ImageAvatar" style="max-height:100%; max-width:100%; display:block" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md">
+                    <label>@Html.DisplayNameFor(item => Model.GhiChu)</label>
+                    @Html.TextAreaFor(model => model.GhiChu, new { @class = "form-control", rows = "5", @placeholder = "Ghi chú cho văn bản" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md">
+                    <label>@Html.DisplayNameFor(item => Model.NoiDung)</label>
+                    @Html.TextAreaFor(model => model.NoiDung, new { @class = "form-control", rows = "5", @placeholder = "Nội dung văn bản" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md">
+                    <label>Hồ Sơ Lưu Trữ</label>
+                    @Html.EditorFor(model => model.HoSoId, new { htmlAttributes = new { @class = "form-control", @placeholder = "Vị trí lưu trữ văn bản" } })
+                    <i><span>Lưu ý: phải nhập đúng với kết quả được gợi ý</span></i>
+                    @Html.ValidationMessageFor(model => model.HoSoId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md">
+                    <i><span id="viTri"></span></i>
+                    <input id="Button1" class="btn btn-primary col-md-auto" type="button" value="Gợi ý vị trí lưu" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+            </div>
+        }
+    </div>
+</div>
+
+@section  scripts{
+    <script>
+         $(function () {
+            var successMessage = '@TempData["AlertMessage"]'
+            if (successMessage != '')
+                alertify.success(successMessage);
+        });
+
+        $(document).ready(function () {
+            $('#containerImage').hide();
+            $('#Button1').click(function (e) {
+                e.preventDefault();
+                var noiDung = $("#NoiDung").val();
+                var loai = $("#Loai").val();
+                if (noiDung.length == 0) {
+                    alert("Muốn sử dụng chức năng gợi ý nơi lưu trữ thì nội dung không được để trống?")
+                } else {
+                    $.ajax({
+                        url: "/TaiLieuVanBan/StorageSuggestion",
+                        type: 'GET',
+                        data: {
+                            document: noiDung,
+                            type: loai
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            var vt = "Vị trí lưu trữ gợi ý: " + data.da;
+                            if (data.da == "Không tìm thấy tài liêu/văn bản có cùng nội dung! Tạo hồ sơ mới.")
+                                $("#viTri").text(vt);
+                            else
+                                $("#HoSoId").val(data.da);
+                            $("#Button1").hide();
+                        },
+                        error: function () {
+                            alert("Lưu trữ tùy ý vì không có tài liệu / văn bản có nội dung tương tự");
+                        }
+                    });
+                }
+            });
+
+            $("#HoSoId").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/TaiLieuVanBan/AutoCompleteText",
+                        type: "POST",
+                        dataType: "json",
+                        data: { text: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.Text, value: item.Text};
+                            }))
+
+                        }
+                    })
+                }
+            });
+
+            $('#ImageAvatar').click(function () {
+                $("#file").trigger('click');
+            });
+
+            $('#imageFile').on('change', function (e) {
+                $('#containerImage').show();
+                var target = e.target,
+                    /*Getiing the selected file*/
+                    imgFile = target.files[0],
+                    readerFile = new FileReader();
+                /*Attaching loading event to the reader*/
+                readerFile.onload = function (loadEvent) {
+                    $('#ImageAvatar').attr('src', loadEvent.target.result)
+                }
+                /*Loading the dataurl to reader*/
+                readerFile.readAsDataURL(imgFile)
+            })
+        });
+    </script>
+}

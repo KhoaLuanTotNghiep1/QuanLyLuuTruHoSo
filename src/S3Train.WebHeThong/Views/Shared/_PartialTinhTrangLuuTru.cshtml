@@ -1,0 +1,23 @@
+﻿@using S3Train.Domain
+@model EnumTinhTrang
+
+@{
+    if (Model == EnumTinhTrang.TrongKho)
+    {
+        <span class="badge badge-primary">Trong Kho</span>
+    }
+
+    if (Model == EnumTinhTrang.DangMuon)
+    {
+        <span class="badge badge-warning">Đang Mượn</span>
+    }
+
+    if (Model == EnumTinhTrang.DaGoi)
+    {
+        <span class="badge badge-secondary">Đã Gởi</span>
+    }
+    if (Model == EnumTinhTrang.DaTra)
+    {
+        <span class="badge badge-success">Đã Trả</span>
+    }
+}

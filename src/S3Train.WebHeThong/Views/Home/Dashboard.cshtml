@@ -1,0 +1,211 @@
+﻿@using S3Train.Domain
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+
+    var array = ViewBag.Array as int[];
+    var lichSuHoatDongs = ViewBag.LichSuHoatDong as IEnumerable<LichSuHoatDong>;
+}
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Bảng Điều Khiển</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("DashBoard","Home")">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+        </ol>
+    </div>
+
+    <div class="row mb-3">
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">Quản Lý Kệ</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Tổng: @array[9].ToString()</div>
+                            <div class="mt-2 mb-0 text-muted text-xs">
+                                <i><span class="text-success mr-2">Hoạt động: @array[10].ToString() kệ</span></i>
+                                <br />
+                                <i><span class="text-danger mr-2">Ngừng hoạt động: @array[11].ToString() kệ</span></i>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="far fa-fw fa-window-restore fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">Quản Lý Hộp</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Tổng: @array[6].ToString()</div>
+                            <div class="mt-2 mb-0 text-muted text-xs">
+                                <i><span class="text-success mr-2">Hoạt động: @array[7].ToString() hộp</span></i>
+                                <br />
+                                <i><span class="text-danger mr-2">Ngừng hoạt động: @array[8].ToString() hộp</span></i>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">Quản Lý Hồ Sơ</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Tổng: @array[0].ToString()</div>
+                            <div class="mt-2 mb-0 text-muted text-xs">
+                                <i><span class="text-success mr-2">Hoạt động: @array[1].ToString() hồ sơ</span></i>
+                                <br />
+                                <i><span class="text-danger mr-2">Ngừng hoạt động: @array[2].ToString() hồ sơ</span></i>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-fw fa-file fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1">Quản Lý Văn Bản</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Tổng: @array[3].ToString()</div>
+                            <div class="mt-2 mb-0 text-muted text-xs">
+                                <i><span class="text-success mr-2">Hoạt động: @array[4].ToString() văn bản</span></i>
+                                <br />
+                                <i><span class="text-danger mr-2">Ngừng hoạt động: @array[5].ToString() văn bản</span></i>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-fw fa-book fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings (Annual) Card Example -->
+        <!-- Area Chart -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card">
+                <div class="card-header py-4 bg-primary d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-light">Các Hoạt Động Gần Nhất</h6>
+                </div>
+                <div>
+                    @if (lichSuHoatDongs.Count() > 0)
+                    {
+                        foreach (var item in lichSuHoatDongs)
+                        {
+                            <div class="customer-message align-items-center">
+                                <a class="font-weight-bold" href="@Url.Action("LichSuHoatDong","Home")">
+                                    <div class="text-truncate message-title">
+                                        @item.ChiTietHoatDong
+                                    </div>
+                                    <div class="small text-gray-500 message-time font-weight-bold">@item.User.UserName : @item.NgayTao</div>
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="customer-message align-items-center">
+                            <a class="font-weight-bold" href="#">
+                                <div class="text-truncate message-title">
+                                    Hôm nay chưa có hoạt động
+                                </div>
+                            </a>
+                        </div>
+                    }
+                    <div class="card-footer text-center">
+                        <a class="m-0 small text-primary card-link" href="@Url.Action("LichSuHoatDong","Home")">Xem Thêm <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Pie Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Tài Liệu/Văn Bản Theo Dạng</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="small text-gray-500">
+                            Văn bản nội bộ
+                            <div class="small float-right"><b>@array[15] trên @array[3] Văn bản</b></div>
+                        </div>
+                        <div class="progress" style="height: 12px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: @array[12].ToString()%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="small text-gray-500">
+                            Văn bản đến
+                            <div class="small float-right"><b>@array[16] trên @array[3] Văn bản</b></div>
+                        </div>
+                        <div class="progress" style="height: 12px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: @array[13].ToString()%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="small text-gray-500">
+                            Văn bản đi
+                            <div class="small float-right"><b>@array[17] trên @array[3] Văn bản</b></div>
+                        </div>
+                        <div class="progress" style="height: 12px;">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: @array[14].ToString()%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a class="m-0 small text-primary card-link" href="@Url.Action("Index","TaiLieuVanBan",new { dang = GlobalConfigs.DANG_NOIBO})">Chi Tiết <i class="fas fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Row-->
+
+    <div class="row">
+        <div class="col-md-12 card">
+            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+                theme: "light2",
+                animationEnabled: true,
+                title: {
+                    text: "Biểu Đồ Thống Kê Tài Liệu/Văn Bản Theo Loại"
+                },
+                data: [{
+                    type:"column",
+		            dataPoints: @Html.Raw(ViewBag.DataPoints)
+                }]
+            });
+            chart.render();
+        });
+    </script>
+}

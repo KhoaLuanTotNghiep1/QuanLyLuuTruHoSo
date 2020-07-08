@@ -1,0 +1,83 @@
+﻿@using S3Train.WebHeThong.Models
+@model KeViewModel
+
+@{
+    ViewBag.Title = "CreateOrUpdate";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+
+    string title = string.IsNullOrEmpty(Model.Id) ? "Tạo Mới" : "Cập Nhật";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@title Kệ</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index","Ke")">Ke</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tao-Moi-Hoac-Cap-Nhat</li>
+    </ol>
+</div>
+
+<div class="card">
+    <div class="card-body" id="myForm">
+        @using (Html.BeginForm("CreateOrUpdate", "Ke", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.Tuid)</label>
+                    @Html.DropDownListFor(m => m.Tuid, new SelectList(ViewBag.Tus, "Value", "Text"), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Tuid, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    <label>@Html.DisplayNameFor(item => Model.SoThuTu)</label>
+                    @Html.EditorFor(model => model.SoThuTu, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SoThuTu, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md">
+                    <label>@Html.DisplayNameFor(item => Model.Ten)</label>
+                    @Html.EditorFor(model => model.Ten, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tên của kệ" } })
+                    @Html.ValidationMessageFor(model => model.Ten, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <div class="row-cols-1 form-group">
+                        <label>@Html.DisplayNameFor(item => Model.NamBatDau)</label>
+                        @Html.EditorFor(model => model.NamBatDau, new { htmlAttributes = new { @class = "form-control Start-Date" } })
+                        @Html.ValidationMessageFor(model => model.NamBatDau, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="row-cols-1 form-group">
+                        <label>@Html.DisplayNameFor(item => Model.NamKetThuc)</label>
+                        @Html.EditorFor(model => model.NamKetThuc, new { htmlAttributes = new { @class = "form-control End-Date" } })
+                        @Html.ValidationMessageFor(model => model.NamKetThuc, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="row-cols-1 form-group">
+                        <label>@Html.DisplayNameFor(item => Model.SoHopToiDa)</label>
+                        @Html.EditorFor(model => model.SoHopToiDa, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.SoHopToiDa, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <label>@Html.DisplayNameFor(item => Model.TinhTrang)</label>
+                    @Html.TextAreaFor(model => model.TinhTrang, new { @class = "form-control", @placeholder = "Điều kiện hiện tại của kệ", rows = "9" })
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-success" />
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            var successMessage = '@TempData["AlertMessage"]'
+            if (successMessage != '')
+                alertify.success(successMessage);
+        });
+    </script>
+}
