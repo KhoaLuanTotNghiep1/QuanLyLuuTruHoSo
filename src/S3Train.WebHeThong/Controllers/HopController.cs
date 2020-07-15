@@ -163,9 +163,9 @@ namespace S3Train.WebHeThong.Controllers
 
             UpdateTu_SoHopHienTai(hop.KeId, ActionWithObject.Delete);
 
-            _hopService.Remove(hop);
-
             _functionLichSuHoatDongService.Create(ActionWithObject.Delete, User.Identity.GetUserId(), chiTietHoatDong);
+
+            _hopService.Remove(hop);
 
             TempData["AlertMessage"] = "Xóa Thành Công";
             

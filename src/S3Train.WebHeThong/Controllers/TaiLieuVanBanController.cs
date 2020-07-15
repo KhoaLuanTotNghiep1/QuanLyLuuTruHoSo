@@ -256,13 +256,13 @@ namespace S3Train.WebHeThong.Controllers
 
             var hosos = AutoCompleteTextHoSos(GetHoSos());
 
-            var list = _taiLieuVanBanService.GetDocuments();
-            list.Add(document);
+            var list = _taiLieuVanBanService.GetDocuments().Take(50).ToList();
 
             var docCollection = new DocumentCollection()
             {
                 DocumentList = list
             };
+            list.Add(document);
 
             var cluster = _taiLieuVanBanService.CountDocumentType(type);
 

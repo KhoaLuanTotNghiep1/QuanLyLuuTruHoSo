@@ -123,9 +123,8 @@ namespace S3Train.WebHeThong.Controllers
                 return RedirectToAction("Index", new { active = false });
             }
 
-            _tuService.Remove(tu);
-
             _functionLichSuHoatDongService.Create(ActionWithObject.Delete, User.Identity.GetUserId(), tu.Ten);
+            _tuService.Remove(tu);         
 
             TempData["AlertMessage"] = "Xóa Thành Công";
 

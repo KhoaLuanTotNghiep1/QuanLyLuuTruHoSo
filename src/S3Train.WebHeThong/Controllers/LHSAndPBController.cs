@@ -140,8 +140,8 @@ namespace S3Train.WebHeThong.Controllers
                 return RedirectToAction("Index", new { active = false });
             }
 
-            _loaiHoSoService.Remove(loaiHoSo);
             _functionLichSuHoatDongService.Create(ActionWithObject.Delete, User.Identity.GetUserId(), "loại hồ sơ: " + loaiHoSo.Ten);
+            _loaiHoSoService.Remove(loaiHoSo);
             TempData["AlertMessage"] = "Xóa Loại Hồ Sơ Thành Công";
             return RedirectToAction("Index");
         }
@@ -158,8 +158,9 @@ namespace S3Train.WebHeThong.Controllers
                 return RedirectToAction("Index", new { active = false });
             }
 
-            _phongBanService.Remove(phongBan);
             _functionLichSuHoatDongService.Create(ActionWithObject.Delete, User.Identity.GetUserId(), "phòng ban: " + phongBan.Ten);
+            _phongBanService.Remove(phongBan);
+           
             TempData["AlertMessage"] = "Xóa Phòng Ban Thành Công";
             return RedirectToAction("Index");
         }

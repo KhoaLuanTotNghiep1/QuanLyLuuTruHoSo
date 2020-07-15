@@ -150,9 +150,9 @@ namespace S3Train.WebHeThong.Controllers
                 return RedirectToAction("Index", new { active = false });
             }
 
+            _functionLichSuHoatDongService.Create(ActionWithObject.Delete, User.Identity.GetUserId(), "hồ sơ: " + hoSo.PhongLuuTru);
             _hoSoService.Remove(hoSo);
             TempData["AlertMessage"] = "Xóa Thành Công";
-            _functionLichSuHoatDongService.Create(ActionWithObject.Delete, User.Identity.GetUserId(), "hồ sơ: "+ hoSo.PhongLuuTru);
             return RedirectToAction("Index");
         }
 
@@ -198,9 +198,7 @@ namespace S3Train.WebHeThong.Controllers
 
         private IEnumerable<Hop> GetHops()
         {
-            var listKe = _hopService.GetAllHaveJoinKe();
-
-            var model = listKe.Where(p => p.TrangThai == true);
+            var model = _hopService.GetAllHaveJoinKe();
 
             return model;
         }

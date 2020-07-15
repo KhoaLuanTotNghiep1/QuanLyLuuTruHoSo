@@ -148,8 +148,16 @@ namespace S3Train.WebHeThong.Controllers
         public async Task<ActionResult> Delete(string id)
         {
             var user = await _userService.GetUserById(id);
-            await _userService.DeleteAsync(user);
+
+            var muonTras = _muonTraService.Gets(p => p.UserId == id);
+
+            if(muonTras.Count() > 0)
+            {
+                TempData["AlertMessage"] = "Cập nhật avatar thành công";
+                return RedirectToAction("IndexAsync");
+            }    
             _functionLichSuHoatDongService.Create(ActionWithObject.Delete, User.Identity.GetUserId(), "tài khoản: " + user.UserName);
+            await _userService.DeleteAsync(user);
             TempData["AlertMessage"] = "Xóa Thành Công";
             return RedirectToAction("IndexAsync");
         }
