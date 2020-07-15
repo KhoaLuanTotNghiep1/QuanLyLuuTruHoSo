@@ -214,7 +214,7 @@ namespace AlgorithmLibrary.Kmeans
             // Tính độ tương tự của document với các center rồi add vào mảng similarityMeasure
             for (int i = 0; i < countCenter; i++)
             {
-                similarityMeasure[i] = SimilarityMatrics.FindCosineSimilarity(clusterCenters[i].GroupedDocument[0].VectorSpace, obj.VectorSpace);
+                similarityMeasure[i] = SimilarityMatrics.FindExtendedJaccard(clusterCenters[i].GroupedDocument[0].VectorSpace, obj.VectorSpace);
             }
 
             // Tìm max trong mảng similarityMeasure
@@ -243,7 +243,7 @@ namespace AlgorithmLibrary.Kmeans
                 {
                     if (ce.Content != documentVector.Content)
                     {
-                        float current = SimilarityMatrics.FindCosineSimilarity(ce.VectorSpace, documentVector.VectorSpace);
+                        float current = SimilarityMatrics.FindExtendedJaccard(ce.VectorSpace, documentVector.VectorSpace);
                         if (max < current)
                         {
                             max = current;

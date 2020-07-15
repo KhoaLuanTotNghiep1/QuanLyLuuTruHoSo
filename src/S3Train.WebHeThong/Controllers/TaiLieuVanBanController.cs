@@ -256,13 +256,13 @@ namespace S3Train.WebHeThong.Controllers
 
             var hosos = AutoCompleteTextHoSos(GetHoSos());
 
-            var list = _taiLieuVanBanService.GetDocuments();
-            list.Add(document);
+            var list = _taiLieuVanBanService.GetDocuments().Take(50).ToList();
 
             var docCollection = new DocumentCollection()
             {
                 DocumentList = list
             };
+            list.Add(document);
 
             var cluster = _taiLieuVanBanService.CountDocumentType(type);
 
@@ -281,22 +281,6 @@ namespace S3Train.WebHeThong.Controllers
             return Json(new { da = local}, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Test()
-        {
-            var list = _taiLieuVanBanService.GetDocuments();
-
-            var docCollection = new DocumentCollection()
-            {
-                DocumentList = list
-            };
-
-            var cluster = _taiLieuVanBanService.CountDocumentType("Thông Báo");
-
-            List<DocumentVector> vSpace = VectorSpaceModel.ProcessDocumentCollection(docCollection);
-            List<Centroid> resultSet = DocumnetClustering.DocumentCluster(cluster, vSpace, "thông báo chính phủ mới");
-
-            return View(resultSet);
-        }
 
         public ActionResult TestAlgorithm()
         {
@@ -316,10 +300,6 @@ namespace S3Train.WebHeThong.Controllers
             {
                 DocumentList = list
             };
-
-            
-
-            //var cluster = _taiLieuVanBanService.CountDocumentType("Thông Báo");
 
             List<DocumentVector> vSpace = VectorSpaceModel.ProcessDocumentCollection(docCollection);
             List<Centroid> resultSet = DocumnetClustering.DocumentCluster(model.Cluster, vSpace, model.Name);

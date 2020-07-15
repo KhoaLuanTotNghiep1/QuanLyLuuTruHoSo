@@ -109,8 +109,9 @@ namespace S3Train.WebHeThong.Controllers
                 return RedirectToAction("Index", new { active = false });
             }
 
-            _noiBanHanhService.Remove(noiBanHanh);
             _functionLichSuHoatDongService.Create(ActionWithObject.Delete, User.Identity.GetUserId(), "nơi ban hành: " + noiBanHanh.Ten);
+            _noiBanHanhService.Remove(noiBanHanh);
+            
             TempData["AlertMessage"] = "Xóa Thành Công";
             return RedirectToAction("Index");
         }

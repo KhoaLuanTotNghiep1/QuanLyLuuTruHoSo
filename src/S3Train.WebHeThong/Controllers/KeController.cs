@@ -149,11 +149,10 @@ namespace S3Train.WebHeThong.Controllers
                 TempData["AlertMessage"] = "Không Thể Xóa Vì Có " + hops + " Hộp Phụ Thuộc";
                 return RedirectToAction("Index", new { active = false });
             }
-
+           
             UpdateTu_SoLuongHienTai(ke.Tuid, ActionWithObject.Delete);
-            _keService.Remove(ke);
-
             _functionLichSuHoatDongService.Create(ActionWithObject.Delete, User.Identity.GetUserId(), "kệ: " + ke.Ten);
+            _keService.Remove(ke);
 
             TempData["AlertMessage"] = "Xóa Thành Công";
             return RedirectToAction("Index");
