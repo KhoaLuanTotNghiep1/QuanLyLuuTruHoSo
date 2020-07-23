@@ -225,7 +225,7 @@ namespace S3Train.WebHeThong.Controllers
                 TrangThai = x.TrangThai,
                 UserId = x.UserId,
                 Tuid = x.Tuid,
-                Hops = x.Hops,
+                Hops = x.Hops.OrderByDescending(c => c.NgayTao).ToList(),
                 User = x.User,
                 Tu = x.Tu
             };

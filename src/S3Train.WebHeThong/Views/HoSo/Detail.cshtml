@@ -170,10 +170,9 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Hình Ảnh</th>
                                     <th>Tên</th>
-                                    <th>Loại</th>
-                                    <th>Tình Trạng Lưu Trữ</th>
+                                    <th>Ngày Tạo</th>
+                                    <th>Lưu Trữ</th>
                                     <th>Trạng Thái</th>
                                     <th>Hoạt Động</th>
                                 </tr>
@@ -182,12 +181,9 @@
                                 @foreach (var taiLieuVanBan in Model.TaiLieuVanBans)
                                 {
                                     <tr>
-                                        <td>@stt</td>
-                                        <td>
-                                            <img src="~/Content/HinhAnhTLVB/@taiLieuVanBan.HinhAnh" class="img-profile rounded" style="max-width:50px" alt="Hình Ảnh Văn Bản" id="ImageAvatar"/>
-                                        </td>
-                                        <td>@Html.DisplayFor(item => taiLieuVanBan.Ten)</td>
-                                        <td>@Html.DisplayFor(item => taiLieuVanBan.Loai)</td>
+                                        <td style="width:5%">@stt</td="width:25%">
+                                        <td style="width:30%">@Html.DisplayFor(item => taiLieuVanBan.Ten)</td>
+                                        <td>@taiLieuVanBan.NgayTao.ToString("dd MMM yyyy")</td>
                                         <td>@Html.Partial("~/Views/Shared/_PartialTinhTrangLuuTru.cshtml", taiLieuVanBan.TinhTrang)</td>
                                         <td>@Html.Partial("~/Views/Shared/_PartialTrangThai.cshtml", taiLieuVanBan.TrangThai)</td>
                                         <td>

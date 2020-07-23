@@ -271,7 +271,7 @@ namespace S3Train.WebHeThong.Controllers
                 NgayCapNhat = hop.NgayCapNhat,
                 TrangThai = hop.TrangThai,
                 UserId = hop.UserId,
-                HoSos = hop.HoSos,
+                HoSos = hop.HoSos.OrderByDescending(c => c.NgayTao).ToList(),
                 Ke = hop.Ke,
                 User = hop.User,
                 KeId = autoList.FirstOrDefault(p => p.Id == hop.KeId).Text

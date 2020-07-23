@@ -173,7 +173,7 @@ namespace S3Train.WebHeThong.Controllers
                 NgayTao = tu.NgayTao,
                 NgayCapNhat = tu.NgayCapNhat,
                 TrangThai = tu.TrangThai,
-                Kes = tu.Kes
+                Kes = tu.Kes.OrderByDescending(c => c.NgayTao).ToList()
             };
             return model;
         }

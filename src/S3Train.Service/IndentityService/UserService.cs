@@ -175,6 +175,24 @@ namespace S3Train.Service
                 }).ToPagedListAsync(pageIndex, pageSize);
         }
 
+        public async Task<IPagedList<UserViewModel>> GetUserSearch(int pageIndex, int pageSize, string searchString)
+        {
+            return await _accountManager.UserManager.Users.Where(c => c.UserName != DefaultUser.Administration && c.UserName.Contains(searchString))
+                .OrderByDescending(order => order.Email)
+                .Select(u => new UserViewModel
+                {
+                    Id = u.Id,
+                    UserName = u.UserName,
+                    Email = u.Email,
+                    FullName = u.FullName,
+                    Avatar = u.Avatar,
+                    PhoneNumber = u.PhoneNumber,
+                    Active = u.Active,
+                    CreatedDate = u.CreatedDate,
+                    UpdatedDate = u.UpdatedDate
+                }).ToPagedListAsync(pageIndex, pageSize);
+        }
+
         public async Task<IdentityResult> DeleteAsync(ApplicationUser user)
         {
             var result = await _accountManager.UserManager.DeleteAsync(user);

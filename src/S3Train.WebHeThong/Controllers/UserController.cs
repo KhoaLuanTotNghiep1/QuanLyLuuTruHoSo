@@ -42,10 +42,20 @@ namespace S3Train.WebHeThong.Controllers
         // GET: User
         [Authorize(Roles = GlobalConfigs.ROLE_GIAMDOC_CANBOVANTHU)]
         [Route("Danh-Sach")]
-        public async Task<ActionResult> IndexAsync()
+        public async Task<ActionResult> IndexAsync(string searchString)
         {
             var model = await _userService.GetUser(1,GlobalConfigs.DEFAULT_PAGESIZE);
             ViewBag.Roles = DropDownRole();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                model = await _userService.GetUserSearch(1, GlobalConfigs.DEFAULT_PAGESIZE, searchString);
+                return View(model);
+            }
+
+            ViewBag.searchString = searchString;
+            ViewBag.Controller = "User";
+
             return View(model);
         }
 
