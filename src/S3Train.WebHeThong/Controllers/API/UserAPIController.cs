@@ -6,6 +6,7 @@ using S3Train.Model.Dto;
 using S3Train.Model.User;
 using S3Train.WebHeThong.Models;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -49,22 +50,29 @@ namespace S3Train.WebHeThong.Controllers.API
             if (result == null)
                 return NotFound();
 
-            return Ok(Mapper.Map<ApplicationUser, UserDto>(result));
+            var model = Mapper.Map<ApplicationUser, UserDto>(result);
+
+            model.Role = await GetRole(result.Id);
+
+            return Ok(model);
         }
 
-        [ResponseType(typeof(UserDto))]
-        public async Task<IHttpActionResult> GetById(string Id)
-        {
-            if (string.IsNullOrEmpty(Id))
+       public async Task<IHttpActionResult> GetById(string userId)
+       {
+            if (string.IsNullOrEmpty(userId))
                 return BadRequest();
 
-            var result = await _userService.GetUserById(Id);
+            var result = await _userService.GetUserById(userId);
 
             if (result == null)
                 return NotFound();
 
-            return Ok(Mapper.Map<ApplicationUser, UserDto>(result));
-        }
+            var model = Mapper.Map<ApplicationUser, UserDto>(result);
+
+            model.Role = await GetRole(result.Id);
+
+            return Ok(model);
+       }
 
         [ResponseType(typeof(UserDto))]
         public async Task<IHttpActionResult> GetByUserName(string userName)
@@ -77,7 +85,11 @@ namespace S3Train.WebHeThong.Controllers.API
             if (result == null)
                 return NotFound();
 
-            return Ok(Mapper.Map<ApplicationUser, UserDto>(result));
+            var model = Mapper.Map<ApplicationUser, UserDto>(result);
+
+            model.Role = await GetRole(result.Id);
+
+            return Ok(model);
         }
 
         [ResponseType(typeof(UserDto))]
@@ -91,7 +103,11 @@ namespace S3Train.WebHeThong.Controllers.API
             if (result == null)
                 return NotFound();
 
-            return Ok(Mapper.Map<ApplicationUser, UserDto>(result));
+            var model = Mapper.Map<ApplicationUser, UserDto>(result);
+
+            model.Role = await GetRole(result.Id);
+
+            return Ok(model);
         }
 
         [HttpPut]
@@ -110,6 +126,8 @@ namespace S3Train.WebHeThong.Controllers.API
 
             userUpdate.UpdatedDate = DateTime.Now;
             await _userService.Update(userUpdate);
+
+            userDto.Role = await GetRole(user.Id);
 
             return Ok(userDto);
         }
@@ -137,7 +155,20 @@ namespace S3Train.WebHeThong.Controllers.API
                 return BadRequest(error);
             }
 
-            return Ok(Mapper.Map<ApplicationUser, UserDto>(user));
+            var userUpdate = Mapper.Map<ApplicationUser, UserDto>(user);
+
+            userUpdate.Role = await GetRole(user.Id);
+
+            return Ok(userUpdate);
+        }
+
+        public async Task<string> GetRole(string id)
+        {
+            var roles = await _userService.GetRolesForUser(id);
+
+            string role = roles.Count() > 0 ? roles[0].ToString() : "";
+
+            return role;
         }
     }
 }

@@ -214,7 +214,7 @@ namespace S3Train.WebHeThong.Controllers
         {
             string id = User.Identity.GetUserId();
 
-            var result = await _userService.UpdatePassword(id, Password);
+            await _userService.UpdatePassword(id, Password);
 
             TempData["AlertMessage"] = "Đổi mật khẩu thành công";
 
