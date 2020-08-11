@@ -120,6 +120,13 @@ namespace S3Train.WebHeThong.Controllers
                         var chitietmuontra = _chiTietMuonTraService.Get(m => m.TrangThai == false);
                         _chiTietMuonTraService.Remove(chitietmuontra);
                     }
+                    else
+                    {
+                        var ctmt = _chiTietMuonTraService.GetById(item.Id);
+                        ctmt.TrangThai = false;
+                        _chiTietMuonTraService.Update(ctmt);
+                    }
+
                     UpdateVanBan(item.TaiLieuVanBanId);
                     UpdateMuonTra(item.MuonTraId);
                 }
