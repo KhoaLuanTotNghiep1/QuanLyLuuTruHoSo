@@ -60,6 +60,7 @@
     <Compile Include="ChiTietMuonTra.cs" />
     <Compile Include="EntityBase.cs" />
     <Compile Include="Enum.cs" />
+    <Compile Include="HinhVanBan.cs" />
     <Compile Include="Hop.cs" />
     <Compile Include="HoSo.cs" />
     <Compile Include="IdentityModels.cs" />

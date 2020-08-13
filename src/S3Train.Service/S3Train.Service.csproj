@@ -126,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
+    <Compile Include="Contract\IHinhVanBanService.cs" />
     <Compile Include="Contract\IAccountManager.cs" />
     <Compile Include="Contract\IChiTietMuonTraService.cs" />
     <Compile Include="Contract\IFunctionLichSuHoatDongService.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="IndentityService\UserService.cs" />
     <Compile Include="Services\ChiTietMuonTraService.cs" />
     <Compile Include="Services\FunctionLichSuHoatDongService.cs" />
+    <Compile Include="Services\HinhVanBanService.cs" />
     <Compile Include="Services\HopService.cs" />
     <Compile Include="Services\HoSoService.cs" />
     <Compile Include="Services\KeService.cs" />

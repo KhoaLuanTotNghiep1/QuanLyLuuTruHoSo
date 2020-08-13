@@ -149,28 +149,29 @@
                 </div>
             </div>
         </div>
-        <br />
-        <div class="modal fade" id="myModal" role="dialog" tabindex="-1" style="height:100%" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <i class="fas fa-window-close"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="dynamic-content">
-                        <img src="~/Content/HinhAnhTLVB/@Model.HinhAnh" class="img-fluid rounded" style="height:100%; width:100%; display:block" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col" style="width:150px; height:200px">
-                <a href="#myModal" role="button" data-toggle="modal">
-                    <img src="~/Content/HinhAnhTLVB/@Model.HinhAnh" class="img-fluid rounded"
-                         alt="Hình Ảnh Tài Liệu/Văn Bản" id="ImageAvatar" style="max-height:100%; max-width:100%; display:block" />
-                </a>
-            </div>
-        </div>
     </div>
+</div>
+
+<div class="h3 mb-0 text-gray-800">
+    Danh Sách Hình Ảnh Văn Bản
+</div>
+<br />
+<div class="row">
+    @{
+        if (Model.hinhVanBans.Count() > 1)
+        {
+            foreach (var image in Model.hinhVanBans)
+            {
+                <div class="col-3" style="text-align:center">
+                    <a href="~/Content/HinhAnhTLVB/@image.TenHinh" target="_blank">
+                        <img src="~/Content/HinhAnhTLVB/@image.TenHinh" style="height: 200px; width: 200px" class="img-thumbnail" />
+                    </a>
+                    <a href="@Url.Action("DeleteImage","TaiLieuVanBan", new { id = image.Id, vbId = image.TaiLieuVanBanId})" class="btn btn-danger m-2" title="Xóa hình ảnh"
+                       onclick="return confirm('Bạn có chắc muốn xóa hình ảnh này?');">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            }
+        }
+    }
 </div>
