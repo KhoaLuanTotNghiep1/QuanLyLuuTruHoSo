@@ -286,6 +286,10 @@
     <Compile Include="Migrations\202005300601539_ChangeTypeToStringColumnDangVB.designer.cs">
       <DependentUpon>202005300601539_ChangeTypeToStringColumnDangVB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008111309145_addTableHinhVanBan.cs" />
+    <Compile Include="Migrations\202008111309145_addTableHinhVanBan.designer.cs">
+      <DependentUpon>202008111309145_addTableHinhVanBan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ChiTietMuonTraViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HopController.cs" />
@@ -2812,6 +2816,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005300601539_ChangeTypeToStringColumnDangVB.resx">
       <DependentUpon>202005300601539_ChangeTypeToStringColumnDangVB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008111309145_addTableHinhVanBan.resx">
+      <DependentUpon>202008111309145_addTableHinhVanBan.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

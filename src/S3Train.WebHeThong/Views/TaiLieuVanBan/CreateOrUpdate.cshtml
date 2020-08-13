@@ -7,6 +7,13 @@
 
     string title = string.IsNullOrEmpty(Model.Id) ? "Tạo Mới" : "Cập Nhật";
 }
+<style>
+    .gallery-img {
+        width: 100px;
+        height: 100px;
+        margin-right: 10px;
+    }
+</style>
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">@title Tài Liệu/Văn Bản</h1>
@@ -93,12 +100,14 @@
             <div class="form-group row">
                 <div class="col-md-6">
                     <label>Hình Ảnh</label>
-                    <input type="file" class="form-control" name="file" id="imageFile" />
+                    <input type="file" class="form-control" name="images" id="gallery-photo-add" multiple />
                     <span class="small">Có thể có hoặc không</span>
                 </div>
-                <div class="col-md-6" style="width:250px; height:300px" id="containerImage">
-                    <img src="~/Content/HinhAnhTLVB/@Model.HinhAnh" class="img-fluid rounded"
-                         alt="Hình Ảnh Tài Liệu/Văn Bản" id="ImageAvatar" style="max-height:100%; max-width:100%; display:block" />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="gallery rounded"></div>
                 </div>
             </div>
 
@@ -199,20 +208,31 @@
             $('#ImageAvatar').click(function () {
                 $("#file").trigger('click');
             });
+        });
 
-            $('#imageFile').on('change', function (e) {
-                $('#containerImage').show();
-                var target = e.target,
-                    /*Getiing the selected file*/
-                    imgFile = target.files[0],
-                    readerFile = new FileReader();
-                /*Attaching loading event to the reader*/
-                readerFile.onload = function (loadEvent) {
-                    $('#ImageAvatar').attr('src', loadEvent.target.result)
+        $(function () {
+            // Multiple images preview in browser
+            var imagesPreview = function (input, placeToInsertImagePreview) {
+
+                if (input.files) {
+                    var filesAmount = input.files.length;
+
+                    for (i = 0; i < filesAmount; i++) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (event) {
+                            $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview).addClass("gallery-img");
+                        }
+
+                        reader.readAsDataURL(input.files[i]);
+                    }
                 }
-                /*Loading the dataurl to reader*/
-                readerFile.readAsDataURL(imgFile)
-            })
+
+            };
+
+            $('#gallery-photo-add').on('change', function () {
+                imagesPreview(this, 'div.gallery');
+            });
         });
     </script>
 }

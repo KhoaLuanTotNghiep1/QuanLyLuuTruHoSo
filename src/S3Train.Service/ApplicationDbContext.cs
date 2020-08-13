@@ -24,6 +24,7 @@ namespace S3Train.Domain
         public DbSet<TaiLieuVanBan> TaiLieuVanBans { get; set; }
         public DbSet<NoiBanHanh> NoiBanHanhs { get; set; }
         public DbSet<LichSuHoatDong> lichSuHoatDongs { get; set; }
+        public DbSet<HinhVanBan> HinhVanBans { get; set; }
 
         public static ApplicationDbContext Create()
         {
@@ -98,6 +99,7 @@ namespace S3Train.Domain
             modelBuilder.Entity<TaiLieuVanBan>().Property(p => p.Dang).HasMaxLength(30).IsOptional();
             modelBuilder.Entity<TaiLieuVanBan>().Property(p => p.HinhAnh).IsOptional();
             modelBuilder.Entity<TaiLieuVanBan>().HasMany(p => p.ChiTietMuonTras).WithOptional(p => p.TaiLieuVanBan);
+            modelBuilder.Entity<TaiLieuVanBan>().HasMany(p => p.HinhVanBans).WithOptional(p => p.TaiLieuVanBan);
 
             modelBuilder.Entity<MuonTra>().ToTable("MuonTra");
             modelBuilder.Entity<MuonTra>().Property(p => p.NgayMuon).IsOptional();
@@ -118,7 +120,9 @@ namespace S3Train.Domain
             modelBuilder.Entity<LichSuHoatDong>().ToTable("LichSuHoatDong");
             modelBuilder.Entity<LichSuHoatDong>().Property(p => p.HoatDong).IsOptional();
             modelBuilder.Entity<LichSuHoatDong>().Property(p => p.ChiTietHoatDong).IsOptional();
-            
+
+            modelBuilder.Entity<HinhVanBan>().ToTable("HinhVanBan");
+            modelBuilder.Entity<HinhVanBan>().Property(p => p.TenHinh).IsOptional();
         }
     }
 }

@@ -30,6 +30,7 @@ namespace S3Train.WebHeThong.Controllers
         private readonly IUserService _userService;
         private readonly IChiTietMuonTraService _chiTietMuonTraService;
         private readonly IFunctionLichSuHoatDongService _functionLichSuHoatDongService;
+        private readonly IHinhVanBanService _hinhVanBanService;
 
         public TaiLieuVanBanController()
         {
@@ -38,7 +39,8 @@ namespace S3Train.WebHeThong.Controllers
 
         public TaiLieuVanBanController(ITaiLieuVanBanService taiLieuVanBanService, INoiBanHanhService noiBanHanhService, 
             IHoSoService hoSoService, ILoaiHoSoService loaiHoSoService, IUserService userService, 
-            IFunctionLichSuHoatDongService functionLichSuHoatDongService, IChiTietMuonTraService chiTietMuonTraService)
+            IFunctionLichSuHoatDongService functionLichSuHoatDongService, IChiTietMuonTraService chiTietMuonTraService,
+            IHinhVanBanService hinhVanBanService)
         {
             _taiLieuVanBanService = taiLieuVanBanService;
             _noiBanHanhService = noiBanHanhService;
@@ -47,6 +49,7 @@ namespace S3Train.WebHeThong.Controllers
             _userService = userService;
             _chiTietMuonTraService = chiTietMuonTraService;
             _functionLichSuHoatDongService = functionLichSuHoatDongService;
+            _hinhVanBanService = hinhVanBanService;
         }
 
         // GET: TaiLieuVanBan
@@ -113,7 +116,7 @@ namespace S3Train.WebHeThong.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateOrUpdate(TaiLieu_VanBanViewModel model, IEnumerable<HttpPostedFileBase> file)
+        public ActionResult CreateOrUpdate(TaiLieu_VanBanViewModel model, HttpPostedFileBase file, IEnumerable<HttpPostedFileBase> images)
         {
             var taiLieuVanBan = string.IsNullOrEmpty(model.Id) ? new TaiLieuVanBan { NgayCapNhat = DateTime.Now }
                 : _taiLieuVanBanService.Get(m => m.Id == model.Id);
@@ -126,8 +129,8 @@ namespace S3Train.WebHeThong.Controllers
             string localFile = Server.MapPath("~/Content/HoSo/");
             string localImage = Server.MapPath("~/Content/HinhAnhTLVB/");
 
-            string path = UpFileGetPathOrFileName(file.ElementAt(0), localFile, model.DuongDan, "path");
-            string hinhAnh = UpFileGetPathOrFileName(file.ElementAt(1), localImage, model.HinhAnh);
+            string path = UpFileGetPathOrFileName(file, localFile, model.DuongDan, "path");
+            string hinhAnh = UpFileGetPathOrFileName(images.ElementAt(0), localImage, model.HinhAnh);
             #endregion
 
             #region taiLieuVanBan
@@ -151,6 +154,7 @@ namespace S3Train.WebHeThong.Controllers
             taiLieuVanBan.HinhAnh = hinhAnh;
             #endregion
 
+            #region Create or update tlvb
             if (string.IsNullOrEmpty(model.Id))
             {
                 var checkName = _taiLieuVanBanService.Get(m => m.Ten == model.Ten);
@@ -172,6 +176,14 @@ namespace S3Train.WebHeThong.Controllers
                 _functionLichSuHoatDongService.Create(ActionWithObject.Update, userId, cthd);
                 TempData["AlertMessage"] = "Cập Nhật Thành Công";
             }
+            #endregion
+
+            if(images.Count() > 0)
+            {
+                var listImage = UpManyFile(images, localImage);
+                AddImagesForItem(taiLieuVanBan.Id, listImage);
+            }
+
             return RedirectToAction("Index", new { dang =  model.Dang});
         }
 
@@ -218,7 +230,20 @@ namespace S3Train.WebHeThong.Controllers
         {
             var model = GetTaiLieuVanBan(_taiLieuVanBanService.GetByIdHaveJoin(id));
 
+            model.hinhVanBans = GetHinhVanBans(id);
+
             return View(model);
+        }
+
+        public ActionResult DeleteImage(string id, string vbId)
+        {
+            var image = _hinhVanBanService.GetById(id);
+            if (image != null)
+            {
+                _hinhVanBanService.Remove(image);
+            }
+
+            return RedirectToAction("Detail", new { id = vbId});
         }
 
         [Authorize(Roles = GlobalConfigs.ROLE_GIAMDOC_CANBOVANTHU)]
@@ -317,6 +342,13 @@ namespace S3Train.WebHeThong.Controllers
             return View(mode);
         }
 
+        public List<HinhVanBan> GetHinhVanBans(string id)
+        {
+            var list = new List<HinhVanBan>();
+            list = _hinhVanBanService.Gets(p => p.TaiLieuVanBanId == id).ToList();
+            return list;
+        }
+
 
         /// <summary>
         /// Upload file
@@ -342,6 +374,45 @@ namespace S3Train.WebHeThong.Controllers
             else
             {
                 return fileName;
+            }
+        }
+
+        public List<string> UpManyFile(IEnumerable<HttpPostedFileBase> a, string url)
+        {
+            var list = new List<string>();
+
+            foreach (var file in a)
+            {
+                string fileName = "";
+                if (file != null && file.ContentLength > 0)
+                {
+                    fileName = Path.GetFileName(file.FileName).ToString();
+                    string path = Path.Combine(url, fileName);
+                    file.SaveAs(path);
+
+                    list.Add(fileName);
+                }
+            }
+
+            return list;
+        }
+
+        public void AddImagesForItem(string id, List<string> nameImages)
+        {
+            HinhVanBan hinhVanBan;
+
+            foreach (var image in nameImages)
+            {
+                hinhVanBan = new HinhVanBan
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    NgayTao = DateTime.Now,
+                    TenHinh = image,
+                    TrangThai = true,
+                    TaiLieuVanBanId = id
+                };
+
+                _hinhVanBanService.Insert(hinhVanBan);
             }
         }
 

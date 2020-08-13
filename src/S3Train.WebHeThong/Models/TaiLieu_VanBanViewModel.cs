@@ -90,6 +90,8 @@ namespace S3Train.WebHeThong.Models
         [Display(Name = "Nơi Ban Hành")]
         public string NoiBanHanhId { get; set; }
 
+        public List<HinhVanBan> hinhVanBans;
+
         public ApplicationUser User { get; set; }
         public HoSo HoSo { get; set; }
         public NoiBanHanh NoiBanHanh { get; set; }
